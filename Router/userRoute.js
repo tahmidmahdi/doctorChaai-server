@@ -40,7 +40,7 @@ router.post('/login', async (req,res) => {
 
                 // asynchronous sign with algo RSA SHA256
                 var token = jwt.sign({
-                    username: user[0].username,
+                    email: user[0].email,
                     userId: user[0]._id
                 }, process.env.JWT_SECRET, {
                     expiresIn: '1h'
