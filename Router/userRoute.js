@@ -20,6 +20,7 @@ router.post("/signup", async (req, res) => {
     await newUser.save();
     res.status(200).json({
       message: "Signup is successful",
+      status: true, 
     });
   } catch (err) {
     res.status(500).json({
