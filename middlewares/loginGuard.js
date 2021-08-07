@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken');
 const loginGuard = (req, res, next) => {
-    const {authorization} = req.headers;
+    const {authorization} = req.body;
     try{
         const token = authorization.split(' ')[1]
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
