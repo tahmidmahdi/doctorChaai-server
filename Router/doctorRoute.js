@@ -12,8 +12,6 @@ const addDoctor = new mongoose.model('addDoctor', addDoctorSchema);
 
 router.get('/', loginGuard, async(req, res) => {
     try{
-        console.log(req.userId);
-        console.log(req.username);
         const doctor = await addDoctor.find({})
             .select({
                 date: 0
@@ -33,7 +31,7 @@ router.get('/', loginGuard, async(req, res) => {
 
 // post a doctor 
 
-router.post('/addDoctor', loginGuard,  async(req, res) => {
+router.post('/addDoctor', loginGuard, async(req, res) => {
     try{
         const newDoctor = await new addDoctor(req.body);
         newDoctor.save();
@@ -62,6 +60,33 @@ router.get('/searchDoctor/:name', async (req, res) => {
         })
     }
 })
+
+router.put('/update/:id', loginGuard, async(req, res) => {
+   await addDoctor.findByIdAndUpdate(
+       {_id: req.params.id},
+       {
+           $set: {
+               status: req.headers.status
+           },
+       }, 
+       {
+            useFindAndModify:false
+       },
+       (err) => {
+           if(err) {
+               res.status(500).json({
+                       error: "There was a server side error!"
+               })
+           } else{
+               res.status(200).json({
+                   message: "Doctor was update successfully"
+               })
+           }
+       }
+   )
+})
+
+
 
 module.exports = router;
 

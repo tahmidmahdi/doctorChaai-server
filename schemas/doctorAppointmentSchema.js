@@ -7,7 +7,7 @@ const doctorAppointmentSchema = mongoose.Schema({
         require: true
     },
 
-    phoneNumber: {
+    phone: {
         type: Number,
         require: true
     },
