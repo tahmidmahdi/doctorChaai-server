@@ -18,7 +18,6 @@ const userSchema = mongoose.Schema({
         default:  Date.now
     },
     
-
 })
 
 module.exports = userSchema;

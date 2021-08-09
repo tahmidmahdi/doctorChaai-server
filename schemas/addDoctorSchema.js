@@ -40,8 +40,12 @@ const addDoctorSchema = mongoose.Schema({
     consultation : {
         type: Number, 
         required: true
-    }, 
-
+    },
+    status: {
+        type: String,
+        default: "pending",
+        enum: ["approved", "pending","rejected"]
+    },
     date: {
         type: Date,
         default: Date.now,
