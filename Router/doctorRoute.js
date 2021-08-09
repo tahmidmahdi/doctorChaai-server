@@ -10,7 +10,7 @@ const addDoctor = new mongoose.model('addDoctor', addDoctorSchema);
 
 // add a doctor 
 
-router.get('/', loginGuard, async(req, res) => {
+router.get('/',  async(req, res) => {
     try{
         const doctor = await addDoctor.find({})
             .select({
@@ -31,7 +31,7 @@ router.get('/', loginGuard, async(req, res) => {
 
 // post a doctor 
 
-router.post('/addDoctor', loginGuard, async(req, res) => {
+router.post('/addDoctor',  async(req, res) => {
     try{
         const newDoctor = await new addDoctor(req.body);
         newDoctor.save();
@@ -61,7 +61,7 @@ router.get('/searchDoctor/:name', async (req, res) => {
     }
 })
 
-router.put('/update/:id', loginGuard, async(req, res) => {
+router.put('/update/:id',  async(req, res) => {
    await addDoctor.findByIdAndUpdate(
        {_id: req.params.id},
        {

@@ -22,7 +22,7 @@ router.get('/', async (req, res) => {
 })
 
 
-router.post('/doctorAppointment', loginGuard, async (req, res) => {
+router.post('/doctorAppointment', async (req, res) => {
 
     try {
         const doctorAppointments = await new doctorAppointment(req.body)
