@@ -4,7 +4,7 @@ const mongoose = require ('mongoose');
 const doctorAppointmentSchema = require ('../schemas/doctorAppointmentSchema');
 const doctorAppointment = new mongoose.model('doctorAppointment', doctorAppointmentSchema);
 const loginGuard = require ('../middlewares/loginGuard')
-router.get('/', async (req, res) => {
+router.get('/', loginGuard, async (req, res) => {
 
     try {
         const appointment = await doctorAppointment.find({})
@@ -22,7 +22,7 @@ router.get('/', async (req, res) => {
 })
 
 
-router.post('/doctorAppointment', async (req, res) => {
+router.post('/doctorAppointment',loginGuard, async (req, res) => {
 
     try {
         const doctorAppointments = await new doctorAppointment(req.body)

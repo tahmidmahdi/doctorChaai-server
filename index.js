@@ -7,7 +7,7 @@ const dotenv = require("dotenv")
 const doctorRoute = require("./Router/doctorRoute");
 const userRoute = require("./Router/userRoute");
 const doctorAppointmentRoute = require("./Router/doctorAppointmentRoute");
-
+const adminLoginRoute = require('./Router/adminLoginRoute');
 
 // use packages
 const app = express();
@@ -38,6 +38,9 @@ app.use("/user", userRoute);
 
 // Appointment route
 app.use("/appointment", doctorAppointmentRoute)
+
+// admin route
+app.use("/admin/login", adminLoginRoute)
 
 app.get('/', async(req, res) => {
   try{
