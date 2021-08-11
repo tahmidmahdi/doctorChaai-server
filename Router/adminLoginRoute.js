@@ -45,7 +45,7 @@ router.post('/', async (req, res) => {
                 });
                 res.status(200).json({
                     "access_token" : token,
-                    "message" : "Login is Successful", 
+                    "message" : "Login is Successful ", 
                     status: true,
                     "email": adminLogin[0].email
                 })
