@@ -28,10 +28,28 @@ router.get('/',loginGuard , async(req, res) => {
     }
 }); 
 
+router.get('/allDoctors', async(req, res) => {
+    try{
+        const doctor = await addDoctor.find({})
+            .select({
+                date: 0
+            })
+        res.status(200).json({
+            result: doctor,
+            message: "success"
+
+        })
+    } catch(err) {
+        res.status(500).json({
+            error: "There was a server side error!",
+        })
+    }
+}); 
+
 
 // post a doctor 
 
-router.post('/addDoctor', loginGuard , async(req, res) => {
+router.post('/addDoctor', async(req, res) => {
     try{
         const newDoctor = await new addDoctor(req.body);
         newDoctor.save();
