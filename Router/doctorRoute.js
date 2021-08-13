@@ -80,7 +80,8 @@ router.get('/searchDoctor/:name',loginGuard, async (req, res) => {
 })
 
 router.put('/update/:id', loginGuard , async(req, res) => {
-   await addDoctor.findByIdAndUpdate(
+    console.log(req.params.id)
+    await addDoctor.findByIdAndUpdate(
        {_id: req.params.id},
        {
            $set: {
@@ -96,6 +97,7 @@ router.put('/update/:id', loginGuard , async(req, res) => {
                        error: "There was a server side error!"
                })
            } else{
+               res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3001');
                res.status(200).json({
                    message: "Doctor was update successfully"
                })

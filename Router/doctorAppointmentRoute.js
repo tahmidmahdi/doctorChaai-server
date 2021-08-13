@@ -10,13 +10,15 @@ router.get('/', loginGuard, async (req, res) => {
         const appointment = await doctorAppointment.find({})
 
         res.status(200).json({
-            result: appointment
+            result: appointment,
+            status: true
 
         })
     }
     catch(err) {
         res.status(500).json({
             error: "There was a server side error!",
+            status: false
         })
     }
 })
@@ -29,12 +31,14 @@ router.post('/doctorAppointment',loginGuard, async (req, res) => {
         doctorAppointments.save();
 
         res.status(200).json({
-            message: "Successfully appointment taken"
+            message: "Successfully appointment taken",
+            status: true
         })
     }
     catch (err) {
         res.status(500).json({
-            error: 'There was a server side error'
+            error: 'There was a server side error',
+            status: false
         });
     }
 })
