@@ -10,7 +10,7 @@ const doctorAppointmentRoute = require("./Router/doctorAppointmentRoute");
 const adminLoginRoute = require('./Router/adminLoginRoute');
 
 // use packages
-const app = express();
+const app = express(); 
 dotenv.config();
 app.use(express.json())
 app.use(cors());
@@ -52,6 +52,7 @@ app.get('/', async(req, res) => {
 
 
 const errorHandler = (err, req, res, next) => {
+  console.log(err.message, err.code)
   if(req.headersSent) {
     return next(err)
   }

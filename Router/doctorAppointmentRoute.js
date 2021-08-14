@@ -29,7 +29,6 @@ router.post('/doctorAppointment',loginGuard, async (req, res) => {
     try {
         const doctorAppointments = await new doctorAppointment(req.body)
         doctorAppointments.save();
-
         res.status(200).json({
             message: "Successfully appointment taken",
             status: true

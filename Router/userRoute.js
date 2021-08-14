@@ -3,9 +3,26 @@ const router = express.Router();
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
 var jwt = require("jsonwebtoken");
+const { check, validationResult } = require("express-validator");
 
 const userSchema = require("../schemas/userSchema");
 const User = new mongoose.model("User", userSchema);
+
+// handle error
+const handleErrors = (err) => {
+  // console.log(err.message, err.code);
+  let data = {email: ""}
+
+  // validation error
+  if(err.message.includes('User validation failed')){
+    Object.values(err.errors).forEach((error) => {
+      data['email'] = error?.properties?.message
+      
+    })
+  }
+  // console.log(data.email)
+  return data;
+};
 
 router.post("/signup", async (req, res) => {
   try {
@@ -17,23 +34,41 @@ router.post("/signup", async (req, res) => {
         status: false,
       });
     } else {
-      //hashing with saltrounds 10
-      const hashedPassword = await bcrypt.hash(req.body.password, 10);
-      const newUser = await new User({
-        name: req.body.name,
-        email: req.body.email,
-        password: hashedPassword,
-      });
-      await newUser.save();
-      res.status(200).json({
-        message: "Signup is successful",
-        status: true,
-      });
+      if (req.body.password.length >= 8) {
+        //hashing with saltrounds 10
+        const hashedPassword = await bcrypt.hash(req.body.password, 10);
+        const newUser = await new User({
+          name: req.body.name,
+          email: req.body.email,
+          password: hashedPassword,
+        });
+        await newUser.save();
+        res.status(200).json({
+          message: "Signup is successful",
+          status: true,
+        });
+      } else {
+        res.status(500).json({
+          message: "Min password length is 8 character",
+          status: false
+        });
+      }
     }
   } catch (err) {
-    res.status(500).json({
-      message: "Signup Failed",
-    });
+    const errors = handleErrors(err);
+    const {email} = errors
+    if(errors){
+      res.status(500).json({
+        message: email,
+        status: false
+      })
+    }
+    else{
+      res.status(500).json({
+        message: "Signup Failed",
+        status: false
+      });
+    }
   }
 });
 
@@ -70,16 +105,19 @@ router.post("/login", async (req, res) => {
       } else {
         res.status(401).json({
           error: "Authentication JWT ERROR",
+          status: false
         });
       }
     } else {
       res.status(401).json({
-        error: "Authentication USer",
+        error: "Authentication User",
+        status: false
       });
     }
   } catch {
     res.status(401).json({
       message: "Authentication Try Error",
+      status: false
     });
   }
 });

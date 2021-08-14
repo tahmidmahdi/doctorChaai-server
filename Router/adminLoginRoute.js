@@ -7,6 +7,7 @@ const admin = new mongoose.model('admin', adminSchema)
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
+
 router.post('/signup', async (req, res) => {
     try{
         const hashedPassword = await bcrypt.hash(req.body.password, 10)
