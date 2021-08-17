@@ -105,10 +105,18 @@ router.put('/update/:id', loginGuard, async (req, res) => {
 router.get('/doctorVerify', loginGuard, async (req, res) => {
   try {
     const doctor = await addDoctor.find({ email: req.headers.email });
-    res.status(200).json({
-      email: req.headers.email,
-      status: true,
-    });
+    console.log(doctor);
+    if (doctor.length > 0) {
+      res.status(200).json({
+        email: req.headers.email,
+        status: true,
+      });
+    } else {
+      res.status(500).json({
+        error: 'There was a server side error!',
+        status: false,
+      });
+    }
   } catch {
     res.status(500).json({
       error: 'There was a server side error!',
