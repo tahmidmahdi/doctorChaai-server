@@ -1,36 +1,35 @@
-const express = require("express");
+const express = require('express');
 const router = express.Router();
-const mongoose = require("mongoose");
-const bcrypt = require("bcrypt");
-var jwt = require("jsonwebtoken");
-const { check, validationResult } = require("express-validator");
+const mongoose = require('mongoose');
+const bcrypt = require('bcrypt');
+var jwt = require('jsonwebtoken');
+const { check, validationResult } = require('express-validator');
 
-const userSchema = require("../schemas/userSchema");
-const User = new mongoose.model("User", userSchema);
+const userSchema = require('../schemas/userSchema');
+const User = new mongoose.model('User', userSchema);
 
 // handle error
 const handleErrors = (err) => {
   // console.log(err.message, err.code);
-  let data = {email: ""}
+  let data = { email: '' };
 
   // validation error
-  if(err.message.includes('User validation failed')){
+  if (err.message.includes('User validation failed')) {
     Object.values(err.errors).forEach((error) => {
-      data['email'] = error?.properties?.message
-      
-    })
+      data['email'] = error?.properties?.message;
+    });
   }
   // console.log(data.email)
   return data;
 };
 
-router.post("/signup", async (req, res) => {
+router.post('/signup', async (req, res) => {
   try {
     const existingUser = await User.findOne({ email: req.body.email });
-    console.log("check existing user", existingUser);
+    console.log('check existing user', existingUser);
     if (existingUser) {
       res.status(500).json({
-        message: "Email Already in use",
+        message: 'Email Already in use',
         status: false,
       });
     } else {
@@ -44,35 +43,34 @@ router.post("/signup", async (req, res) => {
         });
         await newUser.save();
         res.status(200).json({
-          message: "Signup is successful",
+          message: 'Signup is successful',
           status: true,
         });
       } else {
         res.status(500).json({
-          message: "Min password length is 8 character",
-          status: false
+          message: 'Min password length is 8 character',
+          status: false,
         });
       }
     }
   } catch (err) {
     const errors = handleErrors(err);
-    const {email} = errors
-    if(errors){
+    const { email } = errors;
+    if (errors) {
       res.status(500).json({
         message: email,
-        status: false
-      })
-    }
-    else{
+        status: false,
+      });
+    } else {
       res.status(500).json({
-        message: "Signup Failed",
-        status: false
+        message: 'Signup Failed',
+        status: false,
       });
     }
   }
 });
 
-router.post("/login", async (req, res) => {
+router.post('/login', async (req, res) => {
   try {
     const user = await User.find({ email: req.body.email });
     // console.log(user);
@@ -93,31 +91,32 @@ router.post("/login", async (req, res) => {
           },
           process.env.JWT_SECRET,
           {
-            expiresIn: "1h",
+            expiresIn: '1h',
           }
         );
         res.status(200).json({
           access_token: token,
-          message: "Login is Successful",
+          message: 'Login is Successful',
           status: true,
           user: user[0].name,
+          email: user[0].email,
         });
       } else {
         res.status(401).json({
-          error: "Authentication JWT ERROR",
-          status: false
+          error: 'Authentication JWT ERROR',
+          status: false,
         });
       }
     } else {
       res.status(401).json({
-        error: "Authentication User",
-        status: false
+        error: 'Authentication User',
+        status: false,
       });
     }
   } catch {
     res.status(401).json({
-      message: "Authentication Try Error",
-      status: false
+      message: 'Authentication Try Error',
+      status: false,
     });
   }
 });
