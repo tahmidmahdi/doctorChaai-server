@@ -20,4 +20,20 @@ router.post('/addBlog', async (req, res) => {
     });
   }
 });
+
+// admin blog post get
+router.get('/getBlog', async (req, res) => {
+  try {
+    const blogPost = await blog.find({});
+    res.status(200).json({
+      result: blogPost,
+      status: true,
+    });
+  } catch {
+    res.status(200).json({
+      message: 'There is a Error with your request',
+      status: false,
+    });
+  }
+});
 module.exports = router;
