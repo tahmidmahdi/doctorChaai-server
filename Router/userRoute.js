@@ -4,7 +4,6 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 var jwt = require('jsonwebtoken');
 const { check, validationResult } = require('express-validator');
-
 const userSchema = require('../schemas/userSchema');
 const User = new mongoose.model('User', userSchema);
 
@@ -82,7 +81,6 @@ router.post('/login', async (req, res) => {
 
       if (isValidPassword) {
         // generate token
-
         // asynchronous sign with algo RSA SHA256
         var token = jwt.sign(
           {
