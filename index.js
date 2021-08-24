@@ -9,7 +9,7 @@ const userRoute = require('./Router/userRoute');
 const doctorAppointmentRoute = require('./Router/doctorAppointmentRoute');
 const adminLoginRoute = require('./Router/adminLoginRoute');
 const blogRoute = require('./Router/blogRoute');
-const githubRoute = require('./Router/githubRoute');
+// const githubRoute = require('./Router/githubRoute');
 // const redis = require('redis');
 // const fetch = require('node-fetch');
 
