@@ -4,26 +4,26 @@ const doctorAppointmentSchema = mongoose.Schema({
 
     name: {
         type: String,
-        require: true
+        required: true
     },
 
     phone: {
-        type: Number,
-        require: true
+        type: String,
+        required: true
     },
 
     department : {
         type: String,
-        require: true
+        required: true
     },
     doctor : {
         type: String,
-        require: true
+        required: true
     },
     
     date: {
         type: Date,
-        default:  Date.now
+        default: Date.now
     }
 })
 
