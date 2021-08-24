@@ -66,7 +66,6 @@ app.use('/admin/login', adminLoginRoute);
 // blog route
 app.use('/blog', blogRoute);
 
-app.use('/repos', githubRoute);
 // set Response
 // const setResponse = (username, repos) => {
 //   return `<h2>${username} has ${repos} github`;
