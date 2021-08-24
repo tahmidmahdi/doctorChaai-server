@@ -72,47 +72,47 @@ app.use('/repos', githubRoute);
 //   return `<h2>${username} has ${repos} github`;
 // };
 
-const getRepos = async (req, res, next) => {
-  try {
-    console.log('Fetching ...');
-    const {username} = req.params;
-    const response = await fetch(`https://api.github.com/users/${username}`);
+// const getRepos = async (req, res, next) => {
+//   try {
+//     console.log('Fetching ...');
+//     const {username} = req.params;
+//     const response = await fetch(`https://api.github.com/users/${username}`);
 
-    const data = await response.json();
+//     const data = await response.json();
 
-    const repos = await data.public_repos;
+//     const repos = await data.public_repos;
 
-    // set data to redis
-    //  first params takes key, hours in sec
-    client.setex(username, 3600, repos);
+//     // set data to redis
+//     //  first params takes key, hours in sec
+//     client.setex(username, 3600, repos);
 
-    // res.send(setResponse(username, repos));
-    res.json({
-      username: username,
-      repos: data,
-    });
-  } catch (err) {}
-};
+//     // res.send(setResponse(username, repos));
+//     res.json({
+//       username: username,
+//       repos: data,
+//     });
+//   } catch (err) {}
+// };
 
 //  cache middleware
-const cache = (req, res, next) => {
-  const {username} = req.params;
-  client.get(username, (err, data) => {
-    if (err) {
-      throw err;
-    }
+// const cache = (req, res, next) => {
+//   const {username} = req.params;
+//   client.get(username, (err, data) => {
+//     if (err) {
+//       throw err;
+//     }
 
-    if (data != null) {
-      // res.send(setResponse(username, data));
-      res.json({
-        username: username,
-        repos: data,
-      });
-    } else {
-      next();
-    }
-  });
-};
+//     if (data != null) {
+//       // res.send(setResponse(username, data));
+//       res.json({
+//         username: username,
+//         repos: data,
+//       });
+//     } else {
+//       next();
+//     }
+//   });
+// };
 
 // app.get('/repos/:username', cache, getRepos);
 
