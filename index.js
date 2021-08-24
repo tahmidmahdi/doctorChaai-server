@@ -10,8 +10,22 @@ const doctorAppointmentRoute = require('./Router/doctorAppointmentRoute');
 const adminLoginRoute = require('./Router/adminLoginRoute');
 const blogRoute = require('./Router/blogRoute');
 
-// use packages
 const app = express();
+
+//import socket
+const http = require('http').createServer(app);
+const io = require('socket.io')(http)
+
+//socket configuration
+
+io.on('connection', socket => {
+  socket.on('message', ({ name, message }) => {
+    io.emit('message', { name, message })
+  })
+})
+
+// use packages
+
 dotenv.config();
 app.use(express.json());
 app.use(cors());

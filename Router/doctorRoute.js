@@ -75,6 +75,23 @@ router.get('/searchDoctor/:name', loginGuard, async (req, res) => {
   }
 });
 
+
+router.get('/allDoctors/:id', async (req, res) => {
+  try {
+    const doctor = await addDoctor.find({
+      _id: req.params.id
+    });
+    res.status(200).json({
+      result: doctor,
+      message: 'success',
+    });
+  } catch {
+    res.status(500).json({
+      error: 'There was a server side error!',
+    });
+  }
+});
+
 router.put('/update/:id', loginGuard, async (req, res) => {
   console.log(req.params.id);
   await addDoctor.findByIdAndUpdate(
