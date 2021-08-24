@@ -10,21 +10,21 @@ const doctorAppointmentRoute = require('./Router/doctorAppointmentRoute');
 const adminLoginRoute = require('./Router/adminLoginRoute');
 const blogRoute = require('./Router/blogRoute');
 const githubRoute = require('./Router/githubRoute');
-const redis = require('redis');
-const fetch = require('node-fetch');
+// const redis = require('redis');
+// const fetch = require('node-fetch');
 
 const app = express();
 
 //import socket
-const http = require('http').createServer(app);
-const io = require('socket.io')(http);
+// const http = require('http').createServer(app);
+// const io = require('socket.io')(http);
 
 //socket configuration
-io.on('connection', (socket) => {
-  socket.on('message', ({name, message}) => {
-    io.emit('message', {name, message});
-  });
-});
+// io.on('connection', (socket) => {
+//   socket.on('message', ({name, message}) => {
+//     io.emit('message', {name, message});
+//   });
+// });
 
 // use packages
 
