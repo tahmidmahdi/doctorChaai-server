@@ -47,6 +47,10 @@ const addDoctorSchema = mongoose.Schema({
     trim: true,
     lowercase: true,
   },
+  password: {
+    type: String,
+    required: true,
+  },
   status: {
     type: String,
     default: 'pending',

@@ -3,7 +3,7 @@ const router = express.Router();
 const mongoose = require('mongoose');
 const blogSchema = require('../schemas/blogSchema');
 const blog = new mongoose.model('blogSchema', blogSchema);
-
+const redis = require('redis');
 // admin blog post
 router.post('/addBlog', async (req, res) => {
   try {
@@ -35,5 +35,23 @@ router.get('/getBlog', async (req, res) => {
       status: false,
     });
   }
+});
+
+router.get('/repos/:username', async (req, res) => {
+  try {
+    console.log('Fetching ...');
+    const {username} = req.params;
+    const response = await fetch(`https://api.github.com/users/${username}`);
+
+    const data = await response.json();
+
+    const repos = data.public_repos;
+
+    // set data to redis
+    //  first params takes key, hours in sec
+    client.setex(username, 3600, repos);
+
+    res.send(setResponse(username, repos));
+  } catch (err) {}
 });
 module.exports = router;
