@@ -4,6 +4,8 @@ const router = express.Router();
 const mongoose = require('mongoose');
 const addDoctorSchema = require('../schemas/addDoctorSchema');
 const loginGuard = require('../middlewares/loginGuard');
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 // use
 
 const addDoctor = new mongoose.model('addDoctor', addDoctorSchema);
@@ -46,7 +48,20 @@ router.get('/allDoctors', async (req, res) => {
 
 router.post('/addDoctor', async (req, res) => {
   try {
-    const newDoctor = await new addDoctor(req.body);
+    const hashedPassword = await bcrypt.hash(req.body.password, 10);
+    const newDoctor = await new addDoctor({
+      name: req.body.name,
+      phone: req.body.phone,
+      address: req.body.address,
+      experience: req.body.experience,
+      email: req.body.email,
+      password: hashedPassword,
+      about: req.body.about,
+      photo: req.body.photo,
+      education: req.body.education,
+      specialization: req.body.specialization,
+      consultation: req.body.consultation,
+    });
     newDoctor.save();
     res.status(200).json({
       message: 'Successfully inserted a doctor',
@@ -62,7 +77,7 @@ router.get('/searchDoctor/:name', loginGuard, async (req, res) => {
   try {
     const params = req.params.name;
     const doctor = await addDoctor.find({
-      name: { $regex: params, $options: 'i' },
+      name: {$regex: params, $options: 'i'},
     });
     res.status(200).json({
       result: doctor,
@@ -75,11 +90,10 @@ router.get('/searchDoctor/:name', loginGuard, async (req, res) => {
   }
 });
 
-
 router.get('/allDoctors/:id', async (req, res) => {
   try {
     const doctor = await addDoctor.find({
-      _id: req.params.id
+      _id: req.params.id,
     });
     res.status(200).json({
       result: doctor,
@@ -95,7 +109,7 @@ router.get('/allDoctors/:id', async (req, res) => {
 router.put('/update/:id', loginGuard, async (req, res) => {
   console.log(req.params.id);
   await addDoctor.findByIdAndUpdate(
-    { _id: req.params.id },
+    {_id: req.params.id},
     {
       $set: {
         status: req.headers.status,
@@ -121,7 +135,7 @@ router.put('/update/:id', loginGuard, async (req, res) => {
 
 router.get('/doctorVerify', loginGuard, async (req, res) => {
   try {
-    const doctor = await addDoctor.find({ email: req.headers.email });
+    const doctor = await addDoctor.find({email: req.headers.email});
     console.log(doctor);
     if (doctor.length > 0) {
       res.status(200).json({

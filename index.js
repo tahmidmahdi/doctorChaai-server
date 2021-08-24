@@ -15,11 +15,11 @@ const blogRoute = require('./Router/blogRoute');
 
 const app = express();
 
-//import socket
+// import socket
 // const http = require('http').createServer(app);
 // const io = require('socket.io')(http);
 
-//socket configuration
+// socket configuration
 // io.on('connection', (socket) => {
 //   socket.on('message', ({name, message}) => {
 //     io.emit('message', {name, message});
