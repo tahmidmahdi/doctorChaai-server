@@ -73,6 +73,55 @@ router.post('/addDoctor', async (req, res) => {
   }
 });
 
+router.post('/login', async (req, res) => {
+  try {
+    const doctorLogin = await addDoctor.find({email: req.body.email});
+    if (doctorLogin && doctorLogin.length > 0) {
+      const isValidPassword = await bcrypt.compare(
+        req.body.password,
+        doctorLogin[0]?.password
+      );
+
+      if (isValidPassword) {
+        const token = jwt.sign(
+          {
+            email: doctorLogin[0].email,
+          },
+          process.env.JWT_SECRET,
+          {
+            expiresIn: '1h',
+          }
+        );
+        res.status(200).json({
+          access_token: token,
+          message: 'Login is successful',
+          status: true,
+          isDoctor: true,
+          email: doctorLogin[0].email,
+        });
+      } else {
+        res.status(401).json({
+          error: 'Authentication JWT Error',
+          status: false,
+          isDoctor: false,
+        });
+      }
+    } else {
+      res.status(401).json({
+        error: 'Enter correct Email',
+        status: false,
+        isDoctor: false,
+      });
+    }
+  } catch {
+    res.status(401).json({
+      error: 'Authentication JWT Error',
+      status: false,
+      isDoctor: false,
+    });
+  }
+});
+
 router.get('/searchDoctor/:name', loginGuard, async (req, res) => {
   try {
     const params = req.params.name;
