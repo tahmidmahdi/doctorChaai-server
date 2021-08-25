@@ -7,10 +7,10 @@ const doctorAppointment = new mongoose.model(
   doctorAppointmentSchema
 );
 const loginGuard = require('../middlewares/loginGuard');
+
 router.get('/', loginGuard, async (req, res) => {
   try {
     const appointment = await doctorAppointment.find({});
-
     res.status(200).json({
       result: appointment,
       status: true,
