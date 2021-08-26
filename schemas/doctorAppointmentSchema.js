@@ -37,6 +37,10 @@ const doctorAppointmentSchema = mongoose.Schema({
     specialization: {
       type: String,
     },
+    image: {
+      type: String,
+      required: true,
+    },
   },
   schedule: {
     date: {

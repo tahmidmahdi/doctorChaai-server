@@ -11,7 +11,7 @@ const adminLoginRoute = require('./Router/adminLoginRoute');
 const blogRoute = require('./Router/blogRoute');
 // const githubRoute = require('./Router/githubRoute');
 // const redis = require('redis');
-const fetch = require('node-fetch');
+// const fetch = require('node-fetch');
 
 const app = express();
 
@@ -91,7 +91,11 @@ app.use('/blog', blogRoute);
 //       username: username,
 //       repos: data,
 //     });
-//   } catch (err) {}
+//   } catch (err) {
+//     res.status(500).json({
+//       error: 'There was a server side error!',
+//     });
+//   }
 // };
 
 //  cache middleware
