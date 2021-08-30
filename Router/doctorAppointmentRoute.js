@@ -39,4 +39,19 @@ router.post('/doctorAppointment', loginGuard, async (req, res) => {
   }
 });
 
+router.get('/userAppointmentList', loginGuard, async (req, res) => {
+  try {
+    const appointment = await doctorAppointment.find({email: req.body.email});
+    res.status(200).json({
+      result: appointment,
+      status: true,
+    });
+  } catch (err) {
+    res.status(500).json({
+      error: 'There was a server side error!',
+      status: false,
+    });
+  }
+});
+
 module.exports = router;
