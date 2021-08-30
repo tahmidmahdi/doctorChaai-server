@@ -39,9 +39,11 @@ router.post('/doctorAppointment', loginGuard, async (req, res) => {
   }
 });
 
-router.get('/userAppointmentList', loginGuard, async (req, res) => {
+router.get('/userAppointmentList/:email', loginGuard, async (req, res) => {
   try {
-    const appointment = await doctorAppointment.find({email: req.body.email});
+    const appointment = await doctorAppointment.find({
+      email: req.params.email,
+    });
     res.status(200).json({
       result: appointment,
       status: true,
